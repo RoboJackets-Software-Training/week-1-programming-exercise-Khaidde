@@ -38,8 +38,50 @@ int main() {
   // TODO write your code here
   // =========== START =========
 
+  //Print x
+  std::cout << "x: {";
+  for (int i = 0; i < x.size() - 1; i++) {
+    std::cout << x[i] << ",";
+  }
+  std::cout << x[x.size() - 1] << "}" << std::endl;
 
+  //Print w
+  std::cout << "w: {";
+  for (int i = 0; i < w.size() - 1; i++) {
+    std::cout << w[i] << ",";
+  }
+  std::cout << w[w.size() - 1] << "}" << std::endl;
 
+  //Convolute
+  int wOffset = (w.size() - 1) / 2; //round down if w.size is even
+  double sum, xVal;
+  int xIndex;
+  for (int i = 0; i < x.size(); i++) {
+    sum = 0;
+    for (int j = 0; j < w.size(); j++) {
+      xIndex = i + j - wOffset;
+
+      //Deal with missing data
+      if (xIndex < 0 || xIndex >= x.size()) {
+        if (pack_with_zeros) {
+          xVal = 0;
+        } else {
+          xVal = x[xIndex - wOffset * ((0 < xIndex) - (xIndex < 0))];
+        }
+      } else {
+        xVal = x[xIndex];
+      }
+      sum += w[j] * xVal;
+    }
+    y.push_back(sum);
+  }
+
+  //Print y
+  std::cout << "{";
+  for (int i = 0; i < y.size() - 1; i++) {
+    std::cout << y[i] << ",";
+  }
+  std::cout << y[y.size() - 1] << "}" << std::endl;
 
   // =========== END ===========
 
